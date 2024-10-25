@@ -1,9 +1,9 @@
-
 let playerChoice = prompt(`Choose your pick: rock, paper, scissors`).toLowerCase();
 playerChoice = wrongPlayerChoice(playerChoice);
 console.log(playerChoice);
 
 const computer = computerChoice();
+const oneGame = playRound(playerChoice, computer);
 
 function computerChoice () {
     let choice = Math.trunc(Math.random() * 3);
@@ -23,10 +23,29 @@ function computerChoice () {
 
 function wrongPlayerChoice (value) {
     while (value !== "rock" && value !== "paper" && value !== "scissors"){
-        value = prompt(`Choose again: rock, paper, scissors`);
+        value = prompt(`Choose again: rock, paper, scissors!`);
         if (value === null) {
             return null;
             }
     }
     return value;
+}
+
+function playRound (humanChoice, computerChoice) {
+    let result;
+    if(humanChoice === "rock" && computerChoice === "scissors"){
+        console.log("Player wins!");
+    } else if (humanChoice === "paper" && computerChoice === "rock"){
+        console.log("Player wins!");
+    } else if (humanChoice === "scissors" && computerChoice === "paper"){
+        console.log("Player wins!");
+    } else if (humanChoice === "rock" && computerChoice === "rock"){
+        console.log("Draw");
+    } else if (humanChoice === "paper" && computerChoice === "paper"){
+        console.log("Draw");
+    } else if (humanChoice === "scissors" && computerChoice === "scissors"){
+        console.log("Draw");
+    } else {
+        console.log(`Computer "${computerChoice}" wins against Player "${humanChoice}"`)
+    } return result;
 }
