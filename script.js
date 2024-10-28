@@ -1,11 +1,14 @@
 let playerWins = 0;
 let computerWins = 0;
+let gamesPlayed = 0;
 
+function game() {
 
-function game(){
-
-    let playerChoice = prompt(`Choose your pick: rock, paper, scissors`).toLowerCase();
+    let playerChoice = prompt(`Choose your pick: rock, paper, scissors`);
+    if (playerChoice === null) return;
+    playerChoice = playerChoice.toLowerCase();
     playerChoice = wrongPlayerChoice(playerChoice);
+    if (playerChoice === null) return;
 
     const computer = computerChoice();
     const oneGame = playRound(playerChoice, computer);
@@ -14,80 +17,74 @@ function game(){
     computerWins += computerWonGames(oneGame);
     console.log(`Player wins: ${playerWins} Computer wins: ${computerWins}`);
 
-    function computerChoice () {
+    const setWinner = firstFive(playerWins, computerWins);
+
+    if (setWinner) {
+        console.log("Game finished");
+        return;
+    }
+
+    let repeat = confirm(`Do you want to play again?`);
+    if (repeat) {
+        game();
+    }
+
+    function computerChoice() {
         let choice = Math.trunc(Math.random() * 3);
         if (choice === 0) {
-            choice = console.log(`Computer chose rock`);
+            console.log(`Computer chose rock`);
             return "rock";
         } else if (choice === 1) {
-            choice = console.log(`Computer chose paper`);
+            console.log(`Computer chose paper`);
             return "paper";
-        } else if (choice === 2) {
-            choice = console.log(`Computer chose scissors`);
-            return "scissors";
         } else {
-            return -1;
+            console.log(`Computer chose scissors`);
+            return "scissors";
         }
     }
 
-    function wrongPlayerChoice (value) {
-        while (value !== "rock" && value !== "paper" && value !== "scissors"){
+    function wrongPlayerChoice(value) {
+        while (value !== "rock" && value !== "paper" && value !== "scissors") {
             value = prompt(`Choose again: rock, paper, scissors!`);
             if (value === null) {
                 return null;
-                }
+            }
         }
         return value;
     }
 
-    function playRound (humanChoice, computerChoice) {
-        let result;
-        if(humanChoice === "rock" && computerChoice === "scissors"){
-            result = 1;
+    function playRound(humanChoice, computerChoice) {
+        if (humanChoice === "rock" && computerChoice === "scissors" ||
+            humanChoice === "paper" && computerChoice === "rock" ||
+            humanChoice === "scissors" && computerChoice === "paper") {
             console.log("Player wins!");
-        } else if (humanChoice === "paper" && computerChoice === "rock"){
-            result = 1;
-            console.log("Player wins!");
-        } else if (humanChoice === "scissors" && computerChoice === "paper"){
-            result = 1;
-            console.log("Player wins!");
-        } else if (humanChoice === "rock" && computerChoice === "rock"){
-            result = 2;
+            return 1;
+        } else if (humanChoice === computerChoice) {
             console.log("Draw");
-        } else if (humanChoice === "paper" && computerChoice === "paper"){
-            result = 2;
-            console.log("Draw");
-        } else if (humanChoice === "scissors" && computerChoice === "scissors"){
-            result = 2;
-            console.log("Draw");
+            return 2;
         } else {
-            result = 3;
-            console.log(`Computer "${computerChoice}" wins against Player "${humanChoice}"`)
-        } return result;
+            console.log(`Computer "${computerChoice}" wins against Player "${humanChoice}"`);
+            return 3;
+        }
     }
 
-    function playerWonGames (value) {
-        let playerWins = 0;
-        if(value === 1) {
-            playerWins = playerWins + 1;
-        } else {
-            playerWins = playerWins + 0;
-        } return playerWins;
+    function playerWonGames(value) {
+        return value === 1 ? 1 : 0;
     }
 
-    function computerWonGames (value) {
-        let computerWins = 0;
-        if(value === 3) {
-            computerWins = computerWins + 1;
-        } else {
-            computerWins = computerWins + 0;
-        } return computerWins;
+    function computerWonGames(value) {
+        return value === 3 ? 1 : 0;
     }
 
-    const repeat = confirm(`Do you want to play again?`);
-
-    if (repeat === true){
-        game();
+    function firstFive(playerWins, computerWins) {
+        if (playerWins === 5) {
+            console.log(`Player wins the game with ${playerWins} victories`);
+            return true;
+        } else if (computerWins === 5) {
+            console.log(`Computer wins the game with ${computerWins} victories`);
+            return true;
+        }
+        return false;
     }
 }
 
