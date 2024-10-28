@@ -1,6 +1,5 @@
 let playerWins = 0;
 let computerWins = 0;
-let gamesPlayed = 0;
 
 function game() {
 
